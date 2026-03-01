@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from group import Group
-from entry import Entry
+from model.group import Group
+from model.entry import Entry
 
 class Application:
 
