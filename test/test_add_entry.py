@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from model.entry import Entry
 
 
 def test_add_entry(app):
     app.session.login(username="admin", password="secret")
-    app.entry.create(Entry(firstname="Иван", middlename="Иванович", lastname="Иванов", nickname="косой",
+    app.entry.create(Entry(firstname=f"Иван_{datetime.now().strftime('%H:%M:%S.%f')}", middlename="Иванович", lastname="Иванов", nickname="косой",
                                 title="заголовок", company="самая лучшая компания", address="адрес компании",
                                 phone_home="73831234567", phone_mobile="79139130001", phone_work="73831122334",
                                 email="email1@google.com", email2="email2@google.com", email3="email3@google.com",

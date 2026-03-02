@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from model.group import Group
 
 
 def test_add_group(app):
     app.session.login(username="admin", password="secret")
-    app.group.create(Group(name="grname", header="grheader", footer="grfooter"))
+    app.group.create(Group(name=f"grname_{datetime.now().strftime('%H:%M:%S.%f')}", header="grheader", footer="grfooter"))
     app.session.logout()
 
 
