@@ -32,6 +32,11 @@ class EntryHelper(BaseHelper):
         wd.find_element_by_name("delete").click()
         self.app.navigation.go_to_home_page()
 
+    def count(self):
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        return len(wd.find_elements_by_name("selected[]"))
+
     def _select_first_entry(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()

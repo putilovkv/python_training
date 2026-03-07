@@ -4,6 +4,8 @@ from model.entry import Entry
 
 
 def test_modify_first_entry(app):
+    if app.entry.count() == 0:
+        app.entry.create(Entry(firstname="test_modify_first_entry"))
     app.entry.modify_first_entry(Entry(firstname=f"Петр_{datetime.now().strftime('%H:%M:%S.%f')}",
                                        middlename=f"Петрович_{datetime.now().strftime('%H:%M:%S.%f')}",
                                        lastname=f"Петров_{datetime.now().strftime('%H:%M:%S.%f')}", nickname="жулик",
@@ -15,10 +17,16 @@ def test_modify_first_entry(app):
                                        anniversary_day="5", anniversary_month="July", anniversary_year="2020"))
 
 def test_modify_entry_firstname(app):
+    if app.entry.count() == 0:
+        app.entry.create(Entry(firstname="test_modify_entry_firstname"))
     app.entry.modify_first_entry(Entry(firstname=f"new_firstname_{datetime.now().strftime('%H:%M:%S.%f')}"))
 
 def test_modify_entry_middlename(app):
+    if app.entry.count() == 0:
+        app.entry.create(Entry(middlename="test_modify_entry_middlename"))
     app.entry.modify_first_entry(Entry(middlename=f"new_middlename_{datetime.now().strftime('%H:%M:%S.%f')}"))
 
 def test_modify_entry_lastname(app):
+    if app.entry.count() == 0:
+        app.entry.create(Entry(lastname="test_modify_entry_lastname"))
     app.entry.modify_first_entry(Entry(lastname=f"new_lastname_{datetime.now().strftime('%H:%M:%S.%f')}"))
