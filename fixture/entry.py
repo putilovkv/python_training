@@ -1,17 +1,14 @@
-from selenium.webdriver.support.ui import Select
+from fixture.base_helper import BaseHelper
 from model.entry import Entry
 
 
-class EntryHelper:
-
-    def __init__(self, app):
-        self.app = app
+class EntryHelper(BaseHelper):
 
     def create(self, entry: Entry):
         wd = self.app.wd
         # init entry creation
         wd.find_element_by_link_text("add new").click()
-        self.__fill_entry_form(entry)
+        self._fill_entry_form(entry)
         # submit entry creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[19]").click()
         self.app.navigation.go_to_home_page()
@@ -19,79 +16,45 @@ class EntryHelper:
     def modify_first_entry(self, entry: Entry):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        # select first entry
-        wd.find_element_by_name("selected[]").click()
-        # init entry modification
+        self._select_first_entry()
+        # open modification form
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self.__fill_entry_form(entry)
-        # submit entry modification
+        self._fill_entry_form(entry)
+        # submit modification
         wd.find_element_by_name("update").click()
         self.app.navigation.go_to_home_page()
 
     def delete_first_entry(self):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        # select first entry
-        wd.find_element_by_name("selected[]").click()
+        self._select_first_entry()
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.app.navigation.go_to_home_page()
 
-    def __fill_entry_form(self, entry: Entry):
+    def _select_first_entry(self):
         wd = self.app.wd
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(entry.firstname)
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(entry.middlename)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(entry.lastname)
-        wd.find_element_by_name("nickname").click()
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(entry.nickname)
-        wd.find_element_by_name("title").click()
-        wd.find_element_by_name("title").clear()
-        wd.find_element_by_name("title").send_keys(entry.title)
-        wd.find_element_by_name("company").click()
-        wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys(entry.company)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(entry.address)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(entry.phone_home)
-        wd.find_element_by_name("mobile").click()
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(entry.phone_mobile)
-        wd.find_element_by_name("work").click()
-        wd.find_element_by_name("work").clear()
-        wd.find_element_by_name("work").send_keys(entry.phone_work)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(entry.email)
-        wd.find_element_by_name("email2").click()
-        wd.find_element_by_name("email2").clear()
-        wd.find_element_by_name("email2").send_keys(entry.email2)
-        wd.find_element_by_name("email3").click()
-        wd.find_element_by_name("email3").clear()
-        wd.find_element_by_name("email3").send_keys(entry.email3)
-        wd.find_element_by_name("homepage").click()
-        wd.find_element_by_name("homepage").clear()
-        wd.find_element_by_name("homepage").send_keys(entry.homepage_url)
-        wd.find_element_by_name("bday").click()
-        Select(wd.find_element_by_name("bday")).select_by_visible_text(entry.birth_day)
-        wd.find_element_by_name("bmonth").click()
-        Select(wd.find_element_by_name("bmonth")).select_by_visible_text(entry.birth_month)
-        wd.find_element_by_name("byear").click()
-        wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys(entry.birth_year)
-        wd.find_element_by_name("aday").click()
-        Select(wd.find_element_by_name("aday")).select_by_visible_text(entry.anniversary_day)
-        wd.find_element_by_name("amonth").click()
-        Select(wd.find_element_by_name("amonth")).select_by_visible_text(entry.anniversary_month)
-        wd.find_element_by_name("ayear").click()
-        wd.find_element_by_name("ayear").clear()
-        wd.find_element_by_name("ayear").send_keys(entry.anniversary_year)
+        wd.find_element_by_name("selected[]").click()
+
+    def _fill_entry_form(self, entry: Entry):
+        wd = self.app.wd
+        self._change_field("firstname", entry.firstname)
+        self._change_field("middlename", entry.middlename)
+        self._change_field("lastname", entry.lastname)
+        self._change_field("nickname", entry.nickname)
+        self._change_field("title", entry.title)
+        self._change_field("company", entry.company)
+        self._change_field("address", entry.address)
+        self._change_field("home", entry.phone_home)
+        self._change_field("mobile", entry.phone_mobile)
+        self._change_field("work", entry.phone_work)
+        self._change_field("email", entry.email)
+        self._change_field("email2", entry.email2)
+        self._change_field("email3", entry.email3)
+        self._change_field("homepage", entry.homepage_url)
+        self._change_select("bday", entry.birth_day)
+        self._change_select("bmonth", entry.birth_month)
+        self._change_field("byear", entry.birth_year)
+        self._change_select("aday", entry.anniversary_day)
+        self._change_select("amonth", entry.anniversary_month)
+        self._change_field("ayear", entry.anniversary_year)

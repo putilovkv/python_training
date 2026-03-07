@@ -1,11 +1,13 @@
+
+
 class Entry:
 
-    def __init__(self, firstname, middlename, lastname, nickname,
-                 title, company, address,
-                 phone_home, phone_mobile, phone_work,
-                 email, email2, email3, homepage_url,
-                 birth_day, birth_month, birth_year,
-                 anniversary_day, anniversary_month, anniversary_year):
+    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None,
+                 title=None, company=None, address=None,
+                 phone_home=None, phone_mobile=None, phone_work=None,
+                 email=None, email2=None, email3=None, homepage_url=None,
+                 birth_day=None, birth_month=None, birth_year=None,
+                 anniversary_day=None, anniversary_month=None, anniversary_year=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname

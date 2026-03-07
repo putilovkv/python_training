@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from selenium import webdriver
 from fixture.navigation import NavigationHelper
 from fixture.session import SessionHelper

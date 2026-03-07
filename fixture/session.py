@@ -1,9 +1,7 @@
+from fixture.base_helper import BaseHelper
 
 
-class SessionHelper:
-
-    def __init__(self, app):
-        self.app = app
+class SessionHelper(BaseHelper):
 
     def login(self, username: str, password: str):
         wd = self.app.wd

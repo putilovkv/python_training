@@ -13,3 +13,18 @@ def test_modify_first_entry(app):
                                 birth_day="2", birth_month="May", birth_year="1977",
                                 anniversary_day="5", anniversary_month="July", anniversary_year="2020"))
     app.session.logout()
+
+def test_modify_entry_firstname(app):
+    app.session.login(username="admin", password="secret")
+    app.entry.modify_first_entry(Entry(firstname=f"new_firstname_{datetime.now().strftime('%H:%M:%S.%f')}"))
+    app.session.logout()
+
+def test_modify_entry_middlename(app):
+    app.session.login(username="admin", password="secret")
+    app.entry.modify_first_entry(Entry(middlename=f"new_middlename_{datetime.now().strftime('%H:%M:%S.%f')}"))
+    app.session.logout()
+
+def test_modify_entry_lastname(app):
+    app.session.login(username="admin", password="secret")
+    app.entry.modify_first_entry(Entry(lastname=f"new_lastname_{datetime.now().strftime('%H:%M:%S.%f')}"))
+    app.session.logout()

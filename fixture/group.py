@@ -1,50 +1,43 @@
+from fixture.base_helper import BaseHelper
 from model.group import Group
 
 
-class GroupHelper:
-
-    def __init__(self, app):
-        self.app = app
+class GroupHelper(BaseHelper):
 
     def create(self, group: Group):
         wd = self.app.wd
         self.app.navigation.go_to_groups_page()
         # init group creation
         wd.find_element_by_name("new").click()
-        self.__fill_group_form(group)
+        self._fill_group_form(group)
         # submit group creation
         wd.find_element_by_name("submit").click()
         self.app.navigation.go_to_groups_page()
 
-    def modify_first_group(self, group: Group):
+    def modify_first_group(self, new_group_data: Group):
         wd = self.app.wd
         self.app.navigation.go_to_groups_page()
-        # select first group
-        wd.find_element_by_name("selected[]").click()
-        # init group modification
+        self._select_first_group()
+        # open modification form
         wd.find_element_by_name("edit").click()
-        self.__fill_group_form(group)
-        # submit group modification
+        self._fill_group_form(new_group_data)
+        # submit modification
         wd.find_element_by_name("update").click()
         self.app.navigation.go_to_groups_page()
 
     def delete_first_group(self):
         wd = self.app.wd
         self.app.navigation.go_to_groups_page()
-        # select first group
-        wd.find_element_by_name("selected[]").click()
+        self._select_first_group()
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.app.navigation.go_to_groups_page()
 
-    def __fill_group_form(self, group: Group):
+    def _select_first_group(self):
         wd = self.app.wd
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        wd.find_element_by_name("selected[]").click()
+
+    def _fill_group_form(self, group: Group):
+        self._change_field("group_name", group.name)
+        self._change_field("group_header", group.header)
+        self._change_field("group_footer", group.footer)

@@ -1,9 +1,7 @@
+from fixture.base_helper import BaseHelper
 
 
-class NavigationHelper:
-
-    def __init__(self, app):
-        self.app = app
+class NavigationHelper(BaseHelper):
 
     def open_home_page(self):
         wd = self.app.wd
