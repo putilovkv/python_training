@@ -37,6 +37,18 @@ class EntryHelper(BaseHelper):
         self.app.navigation.go_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    def get_entry_list(self):
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        entries = []
+        for element in wd.find_elements_by_name("entry"):
+            tds = element.find_elements_by_tag_name("td")
+            id = tds[0].find_element_by_tag_name("input").get_attribute("id")
+            lastname = tds[1].text
+            firstname = tds[2].text
+            entries.append(Entry(firstname=firstname, lastname=lastname, id=id))
+        return entries
+
     def _select_first_entry(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()

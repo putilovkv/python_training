@@ -1,3 +1,4 @@
+from sys import maxsize
 
 
 class Entry:
@@ -7,7 +8,8 @@ class Entry:
                  phone_home=None, phone_mobile=None, phone_work=None,
                  email=None, email2=None, email3=None, homepage_url=None,
                  birth_day=None, birth_month=None, birth_year=None,
-                 anniversary_day=None, anniversary_month=None, anniversary_year=None):
+                 anniversary_day=None, anniversary_month=None, anniversary_year=None,
+                 id=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -28,3 +30,62 @@ class Entry:
         self.anniversary_day = anniversary_day
         self.anniversary_month = anniversary_month
         self.anniversary_year = anniversary_year
+        self.id = id
+
+    def __repr__(self):
+        return f"{self.id}:{self.lastname} {self.firstname}"
+
+    def __eq__(self, other):
+        return ((self.id is None or other.id is None or self.id == other.id)
+                and self.lastname == other.lastname
+                and self.firstname == other.firstname)
+
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize
+
+    def fill_if_none(self, other):
+        if self.firstname is None:
+            self.firstname = other.firstname
+        if self.middlename is None:
+            self.middlename = other.middlename
+        if self.lastname is None:
+            self.lastname = other.lastname
+        if self.nickname is None:
+            self.nickname = other.nickname
+        if self.title is None:
+            self.title = other.title
+        if self.company is None:
+            self.company = other.company
+        if self.address is None:
+            self.address = other.address
+        if self.phone_home is None:
+            self.phone_home = other.phone_home
+        if self.phone_mobile is None:
+            self.phone_mobile = other.phone_mobile
+        if self.phone_work is None:
+            self.phone_work = other.phone_work
+        if self.email is None:
+            self.email = other.email
+        if self.email2 is None:
+            self.email2 = other.email2
+        if self.email3 is None:
+            self.email3 = other.email3
+        if self.homepage_url is None:
+            self.homepage_url = other.homepage_url
+        if self.birth_day is None:
+            self.birth_day = other.birth_day
+        if self.birth_month is None:
+            self.birth_month = other.birth_month
+        if self.birth_year is None:
+            self.birth_year = other.birth_year
+        if self.anniversary_day is None:
+            self.anniversary_day = other.anniversary_day
+        if self.anniversary_month is None:
+            self.anniversary_month = other.anniversary_month
+        if self.anniversary_year is None:
+            self.anniversary_year = other.anniversary_year
+        if self.id is None:
+            self.id = other.id
