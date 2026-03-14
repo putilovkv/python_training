@@ -18,8 +18,8 @@ def test_modify_first_entry(app):
                                        anniversary_day="5", anniversary_month="July", anniversary_year="2020")
     entry.fill_if_none(old_entries[0])
     app.entry.modify_first_entry(entry)
+    assert len(old_entries) == app.entry.count()
     new_entries = app.entry.get_entry_list()
-    assert len(old_entries) == len(new_entries)
     old_entries[0] = entry
     assert sorted(old_entries, key=Entry.id_or_max) == sorted(new_entries, key=Entry.id_or_max)
 
@@ -30,8 +30,8 @@ def test_modify_entry_firstname(app):
     entry = Entry(firstname=f"new_firstname_{datetime.now().strftime('%H:%M:%S.%f')}")
     entry.fill_if_none(old_entries[0])
     app.entry.modify_first_entry(entry)
+    assert len(old_entries) == app.entry.count()
     new_entries = app.entry.get_entry_list()
-    assert len(old_entries) == len(new_entries)
     old_entries[0] = entry
     assert sorted(old_entries, key=Entry.id_or_max) == sorted(new_entries, key=Entry.id_or_max)
 
@@ -42,8 +42,8 @@ def test_modify_entry_middlename(app):
     entry = Entry(middlename=f"new_middlename_{datetime.now().strftime('%H:%M:%S.%f')}")
     entry.fill_if_none(old_entries[0])
     app.entry.modify_first_entry(entry)
+    assert len(old_entries) == app.entry.count()
     new_entries = app.entry.get_entry_list()
-    assert len(old_entries) == len(new_entries)
     old_entries[0] = entry
     assert sorted(old_entries, key=Entry.id_or_max) == sorted(new_entries, key=Entry.id_or_max)
 
@@ -54,7 +54,7 @@ def test_modify_entry_lastname(app):
     entry = Entry(lastname=f"new_lastname_{datetime.now().strftime('%H:%M:%S.%f')}")
     entry.fill_if_none(old_entries[0])
     app.entry.modify_first_entry(entry)
+    assert len(old_entries) == app.entry.count()
     new_entries = app.entry.get_entry_list()
-    assert len(old_entries) == len(new_entries)
     old_entries[0] = entry
     assert sorted(old_entries, key=Entry.id_or_max) == sorted(new_entries, key=Entry.id_or_max)

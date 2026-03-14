@@ -12,8 +12,8 @@ def test_modify_first_group(app):
                   footer=f"new grfooter_{datetime.now().strftime('%H:%M:%S.%f')}")
     group.fill_if_none(old_groups[0])
     app.group.modify_first_group(group)
+    assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
@@ -24,8 +24,8 @@ def test_modify_group_name(app):
     group = Group(name=f"new_grname_{datetime.now().strftime('%H:%M:%S.%f')}")
     group.fill_if_none(old_groups[0])
     app.group.modify_first_group(group)
+    assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
@@ -36,8 +36,8 @@ def test_modify_group_header(app):
     group = Group(header=f"new_grheader_{datetime.now().strftime('%H:%M:%S.%f')}")
     group.fill_if_none(old_groups[0])
     app.group.modify_first_group(group)
+    assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
@@ -48,7 +48,7 @@ def test_modify_group_footer(app):
     group = Group(footer=f"new_grfooter_{datetime.now().strftime('%H:%M:%S.%f')}")
     group.fill_if_none(old_groups[0])
     app.group.modify_first_group(Group(footer=f"new_grfooter_{datetime.now().strftime('%H:%M:%S.%f')}"))
+    assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
-    assert len(old_groups) == len(new_groups)
     old_groups[0] = group
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)

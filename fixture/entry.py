@@ -4,6 +4,10 @@ from model.entry import Entry
 
 class EntryHelper(BaseHelper):
 
+    def __init__(self, app):
+        super().__init__(app)
+        self.__entry_cache = None
+
     def create(self, entry: Entry):
         wd = self.app.wd
         # init entry creation
@@ -11,6 +15,7 @@ class EntryHelper(BaseHelper):
         self._fill_entry_form(entry)
         # submit entry creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[19]").click()
+        self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
     def modify_first_entry(self, entry: Entry):
@@ -22,6 +27,7 @@ class EntryHelper(BaseHelper):
         self._fill_entry_form(entry)
         # submit modification
         wd.find_element_by_name("update").click()
+        self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
     def delete_first_entry(self):
@@ -30,6 +36,7 @@ class EntryHelper(BaseHelper):
         self._select_first_entry()
         # submit deletion
         wd.find_element_by_name("delete").click()
+        self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
     def count(self):
@@ -38,16 +45,17 @@ class EntryHelper(BaseHelper):
         return len(wd.find_elements_by_name("selected[]"))
 
     def get_entry_list(self):
-        wd = self.app.wd
-        self.app.navigation.go_to_home_page()
-        entries = []
-        for element in wd.find_elements_by_name("entry"):
-            tds = element.find_elements_by_tag_name("td")
-            id = tds[0].find_element_by_tag_name("input").get_attribute("id")
-            lastname = tds[1].text
-            firstname = tds[2].text
-            entries.append(Entry(firstname=firstname, lastname=lastname, id=id))
-        return entries
+        if self.__entry_cache is None:
+            wd = self.app.wd
+            self.app.navigation.go_to_home_page()
+            self.__entry_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                tds = element.find_elements_by_tag_name("td")
+                id = tds[0].find_element_by_tag_name("input").get_attribute("id")
+                lastname = tds[1].text
+                firstname = tds[2].text
+                self.__entry_cache.append(Entry(firstname=firstname, lastname=lastname, id=id))
+        return list(self.__entry_cache)
 
     def _select_first_entry(self):
         wd = self.app.wd

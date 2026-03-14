@@ -13,7 +13,7 @@ def test_add_entry(app):
                                 birth_day="27", birth_month="December", birth_year="1988",
                                 anniversary_day="28", anniversary_month="November", anniversary_year="2000")
     app.entry.create(entry)
+    assert len(old_entries) + 1 == app.entry.count()
     new_entries = app.entry.get_entry_list()
-    assert len(old_entries) + 1 == len(new_entries)
     old_entries.append(entry)
     assert sorted(old_entries, key=Entry.id_or_max) == sorted(new_entries, key=Entry.id_or_max)
