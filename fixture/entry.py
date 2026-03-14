@@ -18,26 +18,31 @@ class EntryHelper(BaseHelper):
         self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
-    def modify_first_entry(self, entry: Entry):
+    def modify_entry_by_index(self, index, new_entry_data: Entry):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        self._select_first_entry()
         # open modification form
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self._fill_entry_form(entry)
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+        self._fill_entry_form(new_entry_data)
         # submit modification
         wd.find_element_by_name("update").click()
         self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
-    def delete_first_entry(self):
+    def modify_first_entry(self, new_entry_data: Entry):
+        self.modify_entry_by_index(0, new_entry_data)
+
+    def delete_entry_by_index(self, index):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        self._select_first_entry()
+        self._select_entry_by_index(index)
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.__entry_cache = None
         self.app.navigation.go_to_home_page()
+
+    def delete_first_entry(self):
+        self.delete_entry_by_index(0)
 
     def count(self):
         wd = self.app.wd
@@ -51,18 +56,20 @@ class EntryHelper(BaseHelper):
             self.__entry_cache = []
             for element in wd.find_elements_by_name("entry"):
                 tds = element.find_elements_by_tag_name("td")
-                id = tds[0].find_element_by_tag_name("input").get_attribute("id")
+                entry_id = tds[0].find_element_by_tag_name("input").get_attribute("id")
                 lastname = tds[1].text
                 firstname = tds[2].text
-                self.__entry_cache.append(Entry(firstname=firstname, lastname=lastname, id=id))
+                self.__entry_cache.append(Entry(firstname=firstname, lastname=lastname, id=entry_id))
         return list(self.__entry_cache)
 
-    def _select_first_entry(self):
+    def _select_entry_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def _select_first_entry(self):
+        self._select_entry_by_index(0)
 
     def _fill_entry_form(self, entry: Entry):
-        wd = self.app.wd
         self._change_field("firstname", entry.firstname)
         self._change_field("middlename", entry.middlename)
         self._change_field("lastname", entry.lastname)
