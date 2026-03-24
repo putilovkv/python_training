@@ -1,5 +1,6 @@
 from fixture.base_helper import BaseHelper
 from model.group import Group
+from typing import List
 
 
 class GroupHelper(BaseHelper):
@@ -46,12 +47,12 @@ class GroupHelper(BaseHelper):
     def delete_first_group(self):
         self.delete_group_by_index(0)
 
-    def count(self):
+    def count(self) -> int:
         wd = self.app.wd
         self.app.navigation.go_to_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def get_group_list(self):
+    def get_group_list(self) -> List[Group]:
         if self.__group_cache is None:
             wd = self.app.wd
             self.app.navigation.go_to_groups_page()

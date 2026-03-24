@@ -29,7 +29,7 @@ def test_modify_entry_firstname(app):
     if app.entry.count() == 0:
         app.entry.create(Entry(firstname="test_modify_entry_firstname"))
     old_entries = app.entry.get_entry_list()
-    index = 1 # randrange(len(old_entries))
+    index = randrange(len(old_entries))
     entry = Entry(firstname=f"new_firstname_{datetime.now().strftime('%H:%M:%S.%f')}")
     entry.fill_if_none(old_entries[index])
     app.entry.modify_entry_by_index(index, entry)

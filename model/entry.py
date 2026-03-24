@@ -9,7 +9,7 @@ class Entry:
                  email=None, email2=None, email3=None, homepage_url=None,
                  birth_day=None, birth_month=None, birth_year=None,
                  anniversary_day=None, anniversary_month=None, anniversary_year=None,
-                 id=None):
+                 id=None, all_phones_from_home_page=None, all_emails_from_home_page=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -31,14 +31,16 @@ class Entry:
         self.anniversary_month = anniversary_month
         self.anniversary_year = anniversary_year
         self.id = id
+        self.all_phones_from_home_page = all_phones_from_home_page
+        self.all_emails_from_home_page = all_emails_from_home_page
 
     def __repr__(self):
         return f"{self.id}:{self.lastname} {self.firstname}"
 
     def __eq__(self, other):
-        return ((self.id is None or other.id is None or self.id == other.id)
-                and self.lastname == other.lastname
-                and self.firstname == other.firstname)
+        return (self.id is None or other.id is None or self.id == other.id)\
+                and self.lastname == other.lastname\
+                and self.firstname == other.firstname
 
     def id_or_max(self):
         if self.id:
@@ -89,3 +91,7 @@ class Entry:
             self.anniversary_year = other.anniversary_year
         if self.id is None:
             self.id = other.id
+        if self.all_phones_from_home_page is None:
+            self.all_phones_from_home_page = other.all_phones_from_home_page
+        if self.all_emails_from_home_page is None:
+            self.all_emails_from_home_page = other.all_emails_from_home_page

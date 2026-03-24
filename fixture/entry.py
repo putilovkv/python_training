@@ -1,5 +1,6 @@
 from fixture.base_helper import BaseHelper
 from model.entry import Entry
+from typing import List
 
 
 class EntryHelper(BaseHelper):
@@ -21,8 +22,7 @@ class EntryHelper(BaseHelper):
     def modify_entry_by_index(self, index, new_entry_data: Entry):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        # open modification form
-        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+        self._open_entry_modification_form(index)
         self._fill_entry_form(new_entry_data)
         # submit modification
         wd.find_element_by_name("update").click()
@@ -44,12 +44,12 @@ class EntryHelper(BaseHelper):
     def delete_first_entry(self):
         self.delete_entry_by_index(0)
 
-    def count(self):
+    def count(self) -> int:
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    def get_entry_list(self):
+    def get_entry_list(self) -> List[Entry]:
         if self.__entry_cache is None:
             wd = self.app.wd
             self.app.navigation.go_to_home_page()
@@ -59,12 +59,53 @@ class EntryHelper(BaseHelper):
                 entry_id = tds[0].find_element_by_tag_name("input").get_attribute("id")
                 lastname = tds[1].text
                 firstname = tds[2].text
-                self.__entry_cache.append(Entry(firstname=firstname, lastname=lastname, id=entry_id))
+                address = tds[3].text
+                all_emails = tds[4].text
+                all_phones = tds[5].text
+                self.__entry_cache.append(Entry(firstname=firstname, lastname=lastname, address=address, id=entry_id,
+                                                all_phones_from_home_page=all_phones, all_emails_from_home_page=all_emails))
         return list(self.__entry_cache)
+
+    def get_entry_info_from_edit_page(self, index) -> Entry:
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        self._open_entry_modification_form(index)
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        middlename = wd.find_element_by_name("middlename").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        nickname = wd.find_element_by_name("nickname").get_attribute("value")
+        title = wd.find_element_by_name("title").get_attribute("value")
+        company = wd.find_element_by_name("company").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        phone_home = wd.find_element_by_name("home").get_attribute("value")
+        phone_mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        phone_work = wd.find_element_by_name("work").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        homepage_url = wd.find_element_by_name("homepage").get_attribute("value")
+        birth_day = wd.find_element_by_name("bday").get_attribute("value")
+        birth_month = wd.find_element_by_name("bmonth").get_attribute("value")
+        birth_year = wd.find_element_by_name("byear").get_attribute("value")
+        anniversary_day = wd.find_element_by_name("aday").get_attribute("value")
+        anniversary_month = wd.find_element_by_name("amonth").get_attribute("value")
+        anniversary_year = wd.find_element_by_name("ayear").get_attribute("value")
+        entry_id = wd.find_element_by_name("id").get_attribute("value")
+        return Entry(firstname=firstname, middlename=middlename, lastname=lastname, nickname=nickname,
+                     title=title, company=company, address=address,
+                     phone_home=phone_home, phone_mobile=phone_mobile, phone_work=phone_work,
+                     email=email, email2=email2, email3=email3, homepage_url=homepage_url,
+                     birth_day=birth_day, birth_month=birth_month, birth_year=birth_year,
+                     anniversary_day=anniversary_day, anniversary_month=anniversary_month, anniversary_year=anniversary_year,
+                     id=entry_id)
 
     def _select_entry_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def _open_entry_modification_form(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
 
     def _select_first_entry(self):
         self._select_entry_by_index(0)
