@@ -12,8 +12,8 @@ class Application:
             self.wd = webdriver.Firefox()
         elif browser == "chrome":
             self.wd = webdriver.Chrome()
-        elif browser == "ie":
-            self.wd = webdriver.Ie()
+        elif browser == "edge":
+            self.wd = webdriver.Edge()
         else:
             raise ValueError(f"Unrecognized browser {browser}")
         self.navigation = NavigationHelper(self, base_url)
