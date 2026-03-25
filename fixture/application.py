@@ -7,9 +7,16 @@ from fixture.entry import EntryHelper
 
 class Application:
 
-    def __init__(self):
-        self.wd = webdriver.Firefox()
-        self.navigation = NavigationHelper(self)
+    def __init__(self, browser, base_url):
+        if browser == "firefox":
+            self.wd = webdriver.Firefox()
+        elif browser == "chrome":
+            self.wd = webdriver.Chrome()
+        elif browser == "ie":
+            self.wd = webdriver.Ie()
+        else:
+            raise ValueError(f"Unrecognized browser {browser}")
+        self.navigation = NavigationHelper(self, base_url)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.entry = EntryHelper(self)
