@@ -1,17 +1,36 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+import pytest
+import random
+import calendar
 from model.entry import Entry
+from test.helper import random_string
 
 
-def test_add_entry(app):
+testdata = ([Entry(firstname=random_string("fn", 30),
+                   middlename=random_string("mn", 30),
+                   lastname=random_string("ln", 30),
+                   nickname=random_string("nn", 30),
+                   title=random_string("ti", 30),
+                   company=random_string("co", 30),
+                   address=random_string("nn", 30, use_newline=True),
+                   phone_home=random_string("ph", 20),
+                   phone_mobile=random_string("pm", 20),
+                   phone_work=random_string("pw", 20),
+                   email=random_string("e1", 30),
+                   email2=random_string("e2", 30),
+                   email3=random_string("e3", 30),
+                   homepage_url=random_string("ur", 50),
+                   birth_day=random.choice([str(x) for x in range(1, 32)] + ["-"]),
+                   birth_month=random.choice(list(calendar.month_name)[1:] + ["-"]),
+                   birth_year=random_string("", 4),
+                   anniversary_day=random.choice([str(x) for x in range(1, 32)] + ["-"]),
+                   anniversary_month=random.choice(list(calendar.month_name)[1:] + ["-"]),
+                   anniversary_year=random_string("", 4))
+             for i in range(5)])
+
+@pytest.mark.parametrize("entry", testdata, ids=[repr(x) for x in testdata])
+def test_add_entry(app, entry):
     old_entries = app.entry.get_entry_list()
-    entry = Entry(firstname=f"Иван_{datetime.now().strftime('%H:%M:%S.%f')}", middlename="Иванович", lastname="Иванов", nickname="косой",
-                                title="заголовок", company="самая лучшая компания", address="адрес компании",
-                                phone_home="73831234567", phone_mobile="79139130001", phone_work="73831122334",
-                                email="email1@google.com", email2="email2@google.com", email3="email3@google.com",
-                                homepage_url="home page url",
-                                birth_day="27", birth_month="December", birth_year="1988",
-                                anniversary_day="28", anniversary_month="November", anniversary_year="2000")
     app.entry.create(entry)
     assert len(old_entries) + 1 == app.entry.count()
     new_entries = app.entry.get_entry_list()
