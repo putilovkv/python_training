@@ -2,7 +2,7 @@ from generator.common import random_string, get_num_and_file_from_args_or_defaul
 from model.group import Group
 
 
-(num_of_groups, file_name) = get_num_and_file_from_args_or_default(num_default=4, file_default="data/groups2.json")
+(num_of_groups, file_name) = get_num_and_file_from_args_or_default(num_default=4, file_default="data/groups.json")
 
 testdata = ([Group(name="", header="", footer="")] +
             [

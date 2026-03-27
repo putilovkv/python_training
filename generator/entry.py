@@ -6,7 +6,10 @@ from model.entry import Entry
 
 (num_of_entries, file_name) = get_num_and_file_from_args_or_default(num_default=3, file_default="data/entries.json")
 
-testdata = ([Entry(firstname=random_string("fn", 30),
+testdata = ([Entry(firstname=random_string("fn", 5),
+                   middlename=random_string("mn", 5),
+                   lastname=random_string("ln", 5))] +
+            [Entry(firstname=random_string("fn", 30),
                    middlename=random_string("mn", 30),
                    lastname=random_string("ln", 30),
                    nickname=random_string("nn", 30),
@@ -26,6 +29,6 @@ testdata = ([Entry(firstname=random_string("fn", 30),
                    anniversary_day=random.choice([str(x) for x in range(1, 32)] + ["-"]),
                    anniversary_month=random.choice(list(calendar.month_name)[1:] + ["-"]),
                    anniversary_year=random_string("", 4))
-             for i in range(num_of_entries)])
+             for i in range(num_of_entries-1)])
 
 save_to_json(testdata, file_name)
