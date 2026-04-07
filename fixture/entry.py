@@ -41,6 +41,15 @@ class EntryHelper(BaseHelper):
         self.__entry_cache = None
         self.app.navigation.go_to_home_page()
 
+    def delete_entry_by_id(self, id):
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        self._select_entry_by_id(id)
+        # submit deletion
+        wd.find_element_by_name("delete").click()
+        self.__entry_cache = None
+        self.app.navigation.go_to_home_page()
+
     def delete_first_entry(self):
         self.delete_entry_by_index(0)
 
@@ -102,6 +111,10 @@ class EntryHelper(BaseHelper):
     def _select_entry_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def _select_entry_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector(f"input[id='{id}']").click()
 
     def _open_entry_modification_form(self, index):
         wd = self.app.wd

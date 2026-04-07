@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
-from random import randrange
+import random
+from test.helper import *
 from model.entry import Entry
 
 
-def test_delete_some_entry(app):
-    if app.entry.count() == 0:
+def test_delete_some_entry(app, db, check_ui):
+    if len(db.get_entry_list()) == 0:
         app.entry.create(Entry(firstname="test_delete_first_entry"))
-    old_entries = app.entry.get_entry_list()
-    index = randrange(len(old_entries))
-    app.entry.delete_entry_by_index(index)
-    assert len(old_entries) - 1 == app.entry.count()
-    new_entries = app.entry.get_entry_list()
-    old_entries[index:index+1] = []
+    old_entries = db.get_entry_list()
+    entry = random.choice(old_entries)
+    app.entry.delete_entry_by_id(entry.id)
+    new_entries = db.get_entry_list()
+    old_entries.remove(entry)
     assert old_entries == new_entries
+    if check_ui:
+        new_entries = make_entries_like_on_homepage(new_entries)
+        assert sorted(new_entries, key=Entry.id_or_max) == sorted(app.entry.get_entry_list(), key=Entry.id_or_max)

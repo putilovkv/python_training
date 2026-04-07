@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import re
+from test.helper import *
 from random import randrange
 
 def test_entry_on_home_page(app):
@@ -12,15 +12,3 @@ def test_entry_on_home_page(app):
     assert entry_from_home_page.address == entry_from_edit_page.address
     assert entry_from_home_page.all_emails_from_home_page == merge_emails_like_on_homepage(entry_from_edit_page)
     assert entry_from_home_page.all_phones_from_home_page == merge_phones_like_on_homepage(entry_from_edit_page)
-
-def clear(s):
-    return re.sub("[() -]", "", s)
-
-def merge_phones_like_on_homepage(entry):
-    return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear(x),
-                                filter(lambda x: x is not None,
-                                       [entry.phone_home, entry.phone_mobile, entry.phone_work]))))
-
-def merge_emails_like_on_homepage(entry):
-    return "\n".join(filter(lambda x: x, [entry.email, entry.email2, entry.email3]))

@@ -35,12 +35,15 @@ class Entry:
         self.all_emails_from_home_page = all_emails_from_home_page
 
     def __repr__(self):
-        return f"{self.id}:{self.lastname} {self.firstname}"
+        return f"{self.id}:{self.lastname}, {self.firstname}, {self.address}, {self.all_emails_from_home_page}, {self.all_phones_from_home_page}"
 
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id)\
                 and self.lastname == other.lastname\
-                and self.firstname == other.firstname
+                and self.firstname == other.firstname\
+                and (self.address or "") == (other.address or "")\
+                and self.all_emails_from_home_page == other.all_emails_from_home_page\
+                and self.all_phones_from_home_page == other.all_phones_from_home_page
 
     def id_or_max(self):
         if self.id:
