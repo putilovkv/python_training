@@ -22,7 +22,17 @@ class EntryHelper(BaseHelper):
     def modify_entry_by_index(self, index, new_entry_data: Entry):
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        self._open_entry_modification_form(index)
+        self._open_entry_modification_form_by_index(index)
+        self._fill_entry_form(new_entry_data)
+        # submit modification
+        wd.find_element_by_name("update").click()
+        self.__entry_cache = None
+        self.app.navigation.go_to_home_page()
+
+    def modify_entry_by_id(self, index, new_entry_data: Entry):
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        self._open_entry_modification_form_by_id(index)
         self._fill_entry_form(new_entry_data)
         # submit modification
         wd.find_element_by_name("update").click()
@@ -78,7 +88,7 @@ class EntryHelper(BaseHelper):
     def get_entry_info_from_edit_page(self, index) -> Entry:
         wd = self.app.wd
         self.app.navigation.go_to_home_page()
-        self._open_entry_modification_form(index)
+        self._open_entry_modification_form_by_index(index)
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         middlename = wd.find_element_by_name("middlename").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
@@ -116,9 +126,13 @@ class EntryHelper(BaseHelper):
         wd = self.app.wd
         wd.find_element_by_css_selector(f"input[id='{id}']").click()
 
-    def _open_entry_modification_form(self, index):
+    def _open_entry_modification_form_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+
+    def _open_entry_modification_form_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector(f"a[href='edit.php?id={id}']").click()
 
     def _select_first_entry(self):
         self._select_entry_by_index(0)

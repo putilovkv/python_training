@@ -32,6 +32,18 @@ class GroupHelper(BaseHelper):
         self.__group_cache = None
         self.app.navigation.go_to_groups_page()
 
+    def modify_group_by_id(self, id, new_group_data: Group):
+        wd = self.app.wd
+        self.app.navigation.go_to_groups_page()
+        self._select_group_by_id(id)
+        # open modification form
+        wd.find_element_by_name("edit").click()
+        self._fill_group_form(new_group_data)
+        # submit modification
+        wd.find_element_by_name("update").click()
+        self.__group_cache = None
+        self.app.navigation.go_to_groups_page()
+
     def modify_first_group(self, new_group_data: Group):
         self.modify_group_by_index(0, new_group_data)
 
