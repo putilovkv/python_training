@@ -18,6 +18,7 @@ class ORMFixture:
         header = Optional(str, column='group_header')
         footer = Optional(str, column='group_footer')
         deprecated = Optional(datetime, column='deprecated')
+        entries = Set(lambda: ORMFixture.ORMEntry, table='address_in_groups', column='id', reverse='groups', lazy=True)
 
     class ORMEntry(db.Entity):
         _table_ = 'addressbook'
@@ -43,6 +44,7 @@ class ORMFixture:
         anniversary_month = Optional(str, column='amonth')
         anniversary_year = Optional(str, column='ayear')
         deprecated = Optional(datetime, column='deprecated')
+        groups = Set(lambda: ORMFixture.ORMGroup, table='address_in_groups', column='group_id', reverse='entries', lazy=True)
 
     def convert_groups_to_model(self, groups):
         def convert(group):
@@ -81,3 +83,17 @@ class ORMFixture:
     @db_session
     def get_entry_list(self):
         return self.convert_entries_to_model(select(e for e in ORMFixture.ORMEntry if e.deprecated is None))
+
+    def get_group_by_id(self, group_id):
+        return list(select(g for g in ORMFixture.ORMGroup if g.id == group_id))[0]
+
+    @db_session
+    def get_entries_in_group(self, group):
+        orm_group = self.get_group_by_id(group.id)
+        return self.convert_entries_to_model(orm_group.entries)
+
+    @db_session
+    def get_entries_not_in_group(self, group):
+        orm_group = self.get_group_by_id(group.id)
+        return self.convert_entries_to_model(
+            select(e for e in ORMFixture.ORMEntry if e.deprecated is None and orm_group not in e.groups))
