@@ -9,11 +9,11 @@ class EntryHelper(BaseHelper):
         super().__init__(app)
         self.__entry_cache = None
 
-    def create(self, entry: Entry):
+    def create(self, entry: Entry, group_id: str=None):
         wd = self.app.wd
         # init entry creation
         wd.find_element_by_link_text("add new").click()
-        self._fill_entry_form(entry)
+        self._fill_entry_form(entry, group_id)
         # submit entry creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[19]").click()
         self.__entry_cache = None
@@ -118,6 +118,27 @@ class EntryHelper(BaseHelper):
                      anniversary_day=anniversary_day, anniversary_month=anniversary_month, anniversary_year=anniversary_year,
                      id=entry_id)
 
+    def add_entry_to_group(self, entry_id, group_id):
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        self._select_entry_by_id(entry_id)
+        # select group to add entry to
+        self._change_select_by_value("to_group", group_id)
+        # submit addition
+        wd.find_element_by_name("add").click()
+        self.app.navigation.go_to_home_page()
+
+    def remove_entry_from_group(self, entry_id, group_id):
+        #Удалить контакт из группы (В выпадающем списке name="group" выбрать по id группу,выбрать контакт по id, в нажать кнопку name="remove")
+        wd = self.app.wd
+        self.app.navigation.go_to_home_page()
+        # select group to remove entry from
+        self._change_select_by_value("group", group_id)
+        self._select_entry_by_id(entry_id)
+        # submit removal
+        wd.find_element_by_name("remove").click()
+        self.app.navigation.go_to_home_page()
+
     def _select_entry_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
@@ -137,7 +158,7 @@ class EntryHelper(BaseHelper):
     def _select_first_entry(self):
         self._select_entry_by_index(0)
 
-    def _fill_entry_form(self, entry: Entry):
+    def _fill_entry_form(self, entry: Entry, group_id: str=None):
         self._change_field("firstname", entry.firstname)
         self._change_field("middlename", entry.middlename)
         self._change_field("lastname", entry.lastname)
@@ -152,9 +173,10 @@ class EntryHelper(BaseHelper):
         self._change_field("email2", entry.email2)
         self._change_field("email3", entry.email3)
         self._change_field("homepage", entry.homepage_url)
-        self._change_select("bday", entry.birth_day)
-        self._change_select("bmonth", entry.birth_month)
+        self._change_select_by_visible_text("bday", entry.birth_day)
+        self._change_select_by_visible_text("bmonth", entry.birth_month)
         self._change_field("byear", entry.birth_year)
-        self._change_select("aday", entry.anniversary_day)
-        self._change_select("amonth", entry.anniversary_month)
+        self._change_select_by_visible_text("aday", entry.anniversary_day)
+        self._change_select_by_visible_text("amonth", entry.anniversary_month)
         self._change_field("ayear", entry.anniversary_year)
+        self._change_select_by_value("new_group", group_id)

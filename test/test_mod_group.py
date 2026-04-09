@@ -6,7 +6,7 @@ from model.group import Group
 
 def test_modify_group(app, db, json_groups, check_ui):
     if len(db.get_group_list()) == 0:
-        app.group.create(Group(name="test_modify_first_group"))
+        app.group.create(Group(name="test_modify_group"))
     old_groups = db.get_group_list()
     old_group = random.choice(old_groups)
     group = json_groups

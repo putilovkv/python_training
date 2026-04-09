@@ -14,7 +14,7 @@ class NavigationHelper(BaseHelper):
     def go_to_home_page(self):
         wd = self.app.wd
         if wd.current_url.rstrip('/') != self.base_url or not wd.current_url.endswith("/index.php"):
-            wd.find_element_by_link_text("home").click()
+            self.open_home_page()
 
     def go_to_groups_page(self):
         wd = self.app.wd
