@@ -1,0 +1,30 @@
+[
+  {
+    "py/object": "model.group.Group",
+    "name": "",
+    "header": "",
+    "footer": "",
+    "id": null
+  },
+  {
+    "py/object": "model.group.Group",
+    "name": "name+qг",
+    "header": "header   N@+C х л#",
+    "footer": "footerэzчЁ  tG л  ",
+    "id": null
+  },
+  {
+    "py/object": "model.group.Group",
+    "name": "name,\\Л",
+    "header": "header У ",
+    "footer": "footereИкc >ыеn ОyщС5 а Э",
+    "id": null
+  },
+  {
+    "py/object": "model.group.Group",
+    "name": "nameц г   $П",
+    "header": "headerL!y",
+    "footer": "footerC-LемНк ЦF",
+    "id": null
+  }
+]
